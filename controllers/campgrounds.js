@@ -4,6 +4,7 @@ const campgroundModel = require('../models/campground')
 //const campgroundRouter = require('../routes/campgrounds')
 //const mongoose = require('mongoose')
 //const campground = require('../models/campground')
+const Review = require('../models/review')
 
 
 //&this is taking data from server side.
@@ -85,6 +86,16 @@ const campgroundIDDeleteReq = async(req,res,next) =>{
     res.redirect(`/campgrounds/`)
 
 }
+
+const reviewPost = async (req,res)=> {
+    const campground = await campgroundModel.Campground.findById(req.params.id);
+    const review = new Review(req.body.review)
+    campground.reviews.push(review)
+    await review.save()
+    await campground.save()
+    res.redirect(`/campgrounds/${campground._id}`)
+    }
+
     module.exports = {
 
         campgroundShow,
@@ -94,6 +105,7 @@ const campgroundIDDeleteReq = async(req,res,next) =>{
         campgroundIDEdit,
         campgroundIDPutReq,
         campgroundIDDeleteReq,
+        reviewPost,
 
         
     } 
