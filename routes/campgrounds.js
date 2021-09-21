@@ -23,7 +23,7 @@ router.get('/:id/edit', campgroundControllers.campgroundIDEdit)
 
 
 router.delete('/:id', campgroundControllers.campgroundIDDeleteReq)
-
+router.delete('/:id/reviews/:reviewId', campgroundControllers.deleteReview)
 //todo this is sending the request to /campgrounds
 router.post('/', campgroundControllers.newCampPost)
 router.post('/:id/reviews', campgroundControllers.reviewPost)

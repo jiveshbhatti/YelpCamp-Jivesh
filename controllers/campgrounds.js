@@ -1,6 +1,7 @@
 const Joi = require('joi')
-const { Error } = require('mongoose')
+const mongoose = require('mongoose')
 const campgroundModel = require('../models/campground')
+const review = require('../models/review')
 //const campgroundRouter = require('../routes/campgrounds')
 //const mongoose = require('mongoose')
 //const campground = require('../models/campground')
@@ -97,6 +98,26 @@ const reviewPost = async (req,res)=> {
     res.render(`campgrounds/show`, {campground})
     }
 
+    const deleteReview = async (req,res) => {
+
+        /**
+         * 
+         * !using $pull operator to delete
+         */
+
+        // res.send('deleteme')
+     
+        const { id, reviewId } = req.params
+        console.log(req.params)
+      const campground =  await campgroundModel.Campground.findByIdAndUpdate(id, {$pull: {reviews: reviewId}})
+      console.log(campground) 
+      const reviewone = await Review.findByIdAndDelete(reviewId)
+      console.log(reviewone)
+      console.log (campground)
+        res.redirect(`/campgrounds/${id}`)
+        console.log('delete review')
+    }
+
     module.exports = {
 
         campgroundShow,
@@ -107,6 +128,7 @@ const reviewPost = async (req,res)=> {
         campgroundIDPutReq,
         campgroundIDDeleteReq,
         reviewPost,
+        deleteReview
 
         
     } 
