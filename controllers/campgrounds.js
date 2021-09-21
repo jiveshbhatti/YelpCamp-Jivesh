@@ -9,16 +9,16 @@ const Review = require('../models/review')
 
 //&this is taking data from server side.
  const campgroundShow = async (req, res, next) => {
-    const campgrounds = await campgroundModel.Campground.find({})
+    const campground = await campgroundModel.Campground.find({})
     //campgroundModel.Campground.find({})
 
-    res.render('campgrounds/index', { campgrounds })}
+    res.render('campgrounds/index', { campground })}
 
 const campgroundShowOne = async (req,res,next) =>{
-const campgrounds = await campgroundModel.Campground.findById(req.params.id)
+const campground = await campgroundModel.Campground.findById(req.params.id)
     
 
-    res.render('campgrounds/show', { campgrounds })
+    res.render('campgrounds/show', { campground })
 }
 
 //to create new campgrounds
@@ -58,8 +58,8 @@ res.redirect(`campgrounds/${campground._id}`)
 
 
 const campgroundIDEdit = async(req,res,next) =>{
-    const campgrounds = await campgroundModel.Campground.findById(req.params.id)
-    res.render('campgrounds/edit', { campgrounds })
+    const campground = await campgroundModel.Campground.findById(req.params.id)
+    res.render('campgrounds/edit', { campground })
 }
 
 
@@ -69,9 +69,9 @@ const campgroundIDPutReq = async(req,res,next) =>{
     // res.render('campgrounds/edit', { campgrounds })
     const {id} = req.params
     console.log(id)
-    const campgrounds = await campgroundModel.Campground.findByIdAndUpdate(id, {...req.body.campground} )
+    const campground = await campgroundModel.Campground.findByIdAndUpdate(id, {...req.body.campground} )
 
-    res.redirect(`/campgrounds/${campgrounds._id}`)
+    res.redirect(`/campgrounds/${campground._id}`)
 
 }
 
@@ -88,12 +88,13 @@ const campgroundIDDeleteReq = async(req,res,next) =>{
 }
 
 const reviewPost = async (req,res)=> {
-    const campground = await campgroundModel.Campground.findById(req.params.id);
+    const campground = await campgroundModel.Campground.findById(req.params.id).populate('reviews')
+    console.log(campground);
     const review = new Review(req.body.review)
     campground.reviews.push(review)
     await review.save()
     await campground.save()
-    res.redirect(`/campgrounds/${campground._id}`)
+    res.render(`campgrounds/show`, {campground})
     }
 
     module.exports = {
