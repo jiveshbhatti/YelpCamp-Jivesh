@@ -6,6 +6,7 @@ var logger = require('morgan');
 const campgroundModel = require('./models/campground')
 const chalk = require('chalk'); //&using chalk for console
 const methodOverride = require('method-override')
+const joi = require('joi')
 
 const ejsMate = require('ejs-mate')
 /**

@@ -1,3 +1,5 @@
+const Joi = require('joi')
+const { Error } = require('mongoose')
 const campgroundModel = require('../models/campground')
 //const campgroundRouter = require('../routes/campgrounds')
 //const mongoose = require('mongoose')
@@ -30,6 +32,20 @@ const newCampground = async (req, res, next) => {
 
 const newCampPost = async(req,res,next) => {
 
+    const campgroundSchema = Joi.object({
+        campground: Joi.object({
+            title: Joi.string().required(),
+            price: Joi.number().required().min(0),
+        }).required()
+    })
+    const result = campgroundSchema.validate(req.body)
+    console.log(result)
+
+    if(result.error) {
+       alert('Problem')
+     
+        
+    }
 const campground =  new campgroundModel.Campground(req.body.campground)
 
 
@@ -80,4 +96,4 @@ const campgroundIDDeleteReq = async(req,res,next) =>{
         campgroundIDDeleteReq,
 
         
-    }
+    } 
